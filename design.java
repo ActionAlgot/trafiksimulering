@@ -75,7 +75,10 @@ public class Car {
 	dest = n;
     }
 
-    public String toString() {...}
+    public String toString(){
+	String s = (bornTime + " " + dest);
+	return s;
+    }
 	
 }
 
@@ -109,7 +112,9 @@ public class Light {
 	return dest;
     }
 
-    public String  toString()  {... }
+    public String  toString()  {
+	return (period + " " + green + " " + time);
+    }
 	
 }
 
@@ -146,7 +151,7 @@ public class Lane {
     }
 
     public Car getFirst() {
-	private Car temp = theLane[0];
+	Car temp = theLane[0];
 	theLane[0] = null;
 	return temp;
 	// Returnera och tag bort bilen som står först
@@ -177,8 +182,18 @@ public class Lane {
 	// (om det går).
     }
 
-    public String toString() {...}
-
+    public String toString() {
+	String s;
+	for(Car c: theLane){
+	    if(c != null){
+		s.append(c.toString() + " ");
+	    }
+	    else{
+		s.append("X ");
+	    }
+	}
+	return s;
+    }
 }
 
 
@@ -203,14 +218,23 @@ public class TrafficSystem {
     private int bcLength;
 
     // Diverse attribut för statistiksamling
-    private int carsPassed;
-    private int timeWaited;
+    private int carsPassed = 0;
+    private int timeWaited = 0;
     
     private int time = 0;
 
-    public TrafficSystem() {...}
+    public TrafficSystem(int ll, int ll2, int lTR, int gTR, int lTL, int gTL, int a, int d){
+	r0 = Lane(ll);
+	r1 = Lane(ll2);
+	r2 = Lane(ll2);
+	s1 = Light(lTR, gTR);
+	s1 = Light(lTL, gTL);
+	ankomstInternsitet = a;
+	destinationer = d;	
+    }
 
     public readParameters() {
+	System.out.println("")
 	// Läser in parametrar för simuleringen
 	// Metoden kan läsa från terminalfönster, dialogrutor
 	// eller från en parameterfil. Det sista alternativet
@@ -226,14 +250,14 @@ public class TrafficSystem {
 	s1.step();
 	s2.step();
 	if(s1.isGreen){
-	    r1.getFirst; //TODO hantera returnen // illustrera att bilen åker ut
+	    Car temp1 = r1.getFirst; //TODO hantera returnen // illustrera att bilen åker ut
 	}
 	if(s2.isGreen){
-	    r2.getFirst; //TODO hantera returnen // illustrera att bilen åker ut
+	    Car temp2 = r2.getFirst; //TODO hantera returnen // illustrera att bilen åker ut
 	}
 	r1.step();
 	r2.step();
-	private Car c = r0.firstCar();
+	Car c = r0.firstCar();
 	if(c != null){
 	    if (c.getDest() == 1){
 		if(r1.lastFree()){
@@ -253,18 +277,23 @@ public class TrafficSystem {
 	    }
 	    else{
 		r0.putLast(Car(time, 2));
+	    }
 	}
+	print();
     }
 
-    public void printStatistics() {
+	//    public void printStatistics() {
 	// Skriv statistiken samlad så här långt
-    }
-
-    public void print() {
+	//}
+    public void print(){
+	System.out.println(s1.toString());
+	System.out.print(r1.toString());
+	System.out.println(r0.toString());
+	System.out.println(r2.toString());
+	System.out.println(s2.toString());
 	// Skriv ut en grafisk representation av kösituationen
 	// med hjälp av klassernas toString-metoder
     }
-
 }
 
 

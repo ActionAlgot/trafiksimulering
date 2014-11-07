@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 /*
   Modell för trafiksimulering
   ===========================
@@ -57,8 +58,8 @@
     
 */
 
-
-
+import java.lang.*;
+import java.util.Scanner;
 
 // Skiss av klasser. Angivna klasser och metoder skall finnas.
 // Det är tillåtet att tillfoga fler attribut och metoder
@@ -79,7 +80,10 @@ public class Car {
 	String s = (bornTime + " " + dest);
 	return s;
     }
-	
+
+    public int getDest(){
+	return dest;
+    }	
 }
 
 
@@ -108,9 +112,7 @@ public class Light {
 	return (time<green);
 	// Returnerar true om time<green, annars false
     }
-    public int getDest(){
-	return dest;
-    }
+
 
     public String  toString()  {
 	return (period + " " + green + " " + time);
@@ -138,7 +140,7 @@ public class Lane {
 	for(int i = 0; i < theLane.length; i++){
 	    if(theLane[i] != null){
 		if(i != 0){
-		    if(i-1 == null){
+		    if(theLane[i-1] == null){
 			theLane[i-1] = theLane[i];
 			theLane[i] = null;
 		    }
@@ -172,8 +174,8 @@ public class Lane {
     }
 
     public void putLast(Car c) throws OverflowException {
-	if(lastFree(theLane)){
-	    thelane[theLane.length-1] = c;
+	if(lastFree()){
+	    theLane[theLane.length-1] = c;
 	}
 	else{
 	    //TODO OverflowException
@@ -183,13 +185,13 @@ public class Lane {
     }
 
     public String toString() {
-	String s;
+	String s = "";
 	for(Car c: theLane){
 	    if(c != null){
-		s.append(c.toString() + " ");
+		s = s + (c.toString() + " ");
 	    }
 	    else{
-		s.append("X ");
+		s = s + ("X ");
 	    }
 	}
 	return s;
@@ -224,17 +226,106 @@ public class TrafficSystem {
     private int time = 0;
 
     public TrafficSystem(int ll, int ll2, int lTR, int gTR, int lTL, int gTL, int a, int d){
-	r0 = Lane(ll);
-	r1 = Lane(ll2);
-	r2 = Lane(ll2);
-	s1 = Light(lTR, gTR);
-	s1 = Light(lTL, gTL);
-	ankomstInternsitet = a;
+	r0 = new Lane(ll);
+	r1 = new Lane(ll2);
+	r2 = new Lane(ll2);
+	s1 = new Light(lTR, gTR);
+	s2 = new Light(lTL, gTL);
+	ankomstIntensitet = a;
 	destinationer = d;	
     }
 
-    public readParameters() {
-	System.out.println("")
+    public TrafficSystem(){
+	readParameters();
+    }
+
+    public void readParameters(){
+	Scanner input = new Scanner(System.in);
+	int tempP = 1;
+	while(true){
+	    try{
+		System.out.print("Length of r0: ");
+		r0 = new Lane(input.nextInt());
+		break;
+	    }
+	    catch(InputMismatchException x){
+		System.out.println("Invalid input try again with int");
+	    }
+	}
+	
+	while(true){
+	    try{
+		System.out.print("\nLength of r1 and r2: ");
+		r1 = new Lane(input.nextInt());
+		r2 = r1;
+		break;
+	    }
+	    catch(InputMismatchException x){
+		System.out.println("Invalid input try again with int");
+	    }
+	}
+	while(true){
+	    try{
+		System.out.print("\nRight traffic light period: ");
+		tempP = input.nextInt();
+		break;
+	    }
+	    catch(InputMismatchException x){
+		System.out.println("Invalid input try again with int");
+	    }
+	}
+
+	while(true){
+	    try{
+		System.out.print("\nRight traffic green time: ");
+		s1 = new Light(tempP, input.nextInt());
+		break;
+	    }
+	    catch(InputMismatchException x){
+		System.out.println("Invalid input try again with int");
+	    }
+	}
+	while(true){
+	    try{
+		System.out.print("\nLeft traffic light period: ");
+		tempP = input.nextInt();
+		break;
+	    }
+	    catch(InputMismatchException x){
+		System.out.println("Invalid input try again with int");
+	    }
+	}
+	while(true){
+	    try{
+		System.out.print("\nLeft traffic light green time: ");
+		s2 = new Light(tempP, input.nextInt());
+		break;
+	    }
+	    catch(InputMismatchException x){
+		System.out.println("Invalid input try again with int");
+	    }
+	}
+	while(true){
+	    try{
+		System.out.print("\nArrival intensity: ");
+		ankomstIntensitet = input.nextInt();
+		break;
+	    }
+	    catch(InputMismatchException x){
+		System.out.println("Invalid input try again with int");
+	    }
+	}
+	while(true){
+	    try{
+		System.out.print("\nDestination ratio: ");
+		destinationer = input.nextInt();
+		break;
+	    }
+	    catch(InputMismatchException x){
+		System.out.println("Invalid input try again with int");
+	    }
+	}
+	System.out.print("\n");
 	// Läser in parametrar för simuleringen
 	// Metoden kan läsa från terminalfönster, dialogrutor
 	// eller från en parameterfil. Det sista alternativet
@@ -249,11 +340,11 @@ public class TrafficSystem {
 	time++;
 	s1.step();
 	s2.step();
-	if(s1.isGreen){
-	    Car temp1 = r1.getFirst; //TODO hantera returnen // illustrera att bilen åker ut
+	if(s1.isGreen()){
+	    Car temp1 = r1.getFirst(); //TODO hantera returnen
 	}
-	if(s2.isGreen){
-	    Car temp2 = r2.getFirst; //TODO hantera returnen // illustrera att bilen åker ut
+	if(s2.isGreen()){
+	    Car temp2 = r2.getFirst(); //TODO hantera returnen
 	}
 	r1.step();
 	r2.step();
@@ -265,18 +356,18 @@ public class TrafficSystem {
 		}
 	    }
 	    else{
-		if(r2.lastFree(c)){
+		if(r2.lastFree()){
 		    r2.putLast(c);
 		}
 	    }
 	}
 	r0.step();
-	if(math.random()*ankomstintensitet == 0){
-	    if(math.random()*destination == 0){
-		r0.putLast(Car(time, 1));
+	if(Math.random()*ankomstIntensitet == 0){
+	    if(Math.random()*destinationer == 0){
+		r0.putLast(new Car(time, 1));
 	    }
 	    else{
-		r0.putLast(Car(time, 2));
+		r0.putLast(new Car(time, 2));
 	    }
 	}
 	print();
@@ -301,10 +392,14 @@ public class TrafficSystem {
 public class Simulation {
 
     public static void main(String [] args) {
+	TrafficSystem tf = new TrafficSystem();
+	for(int i = 0; i<50; i++){
+	    tf.step();
+	    tf.print();
+	}
 	// Skapar ett TrafficSystem
 	// Utför stegningen, anropar utskriftsmetoder
 
-	...
 
     }
 }

@@ -10,6 +10,10 @@ public class Car {
 	dest = n;
     }
 
+    public int getBornTime(){
+	return bornTime;
+    }
+
     public String toString(){
 	String s = (bornTime + " " + dest);
 	return s;

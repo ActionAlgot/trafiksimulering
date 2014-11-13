@@ -24,6 +24,13 @@ public class TrafficSystem {
     // Diverse attribut för statistiksamling
     private int carsPassed = 0;
     private int timeWaited = 0;
+
+    private void collectStats(Car c){
+	if(c != null){
+	    carsPassed++;
+	    timeWaited = timeWaited + (time - c.getBornTime());
+	}
+    }
     
     private int time = 0;
 
@@ -58,8 +65,9 @@ public class TrafficSystem {
 	while(true){
 	    try{
 		System.out.print("\nLength of r1 and r2: ");
-		r1 = new Lane(input.nextInt());
-		r2 = r1;
+		int tempn = input.nextInt();
+		r1 = new Lane(tempn);
+		r2 = new Lane(tempn);
 		break;
 	    }
 	    catch(InputMismatchException x){
@@ -143,41 +151,41 @@ public class TrafficSystem {
 	s1.step();
 	s2.step();
 	if(s1.isGreen()){
-	    Car temp1 = r1.getFirst(); //TODO hantera returnen
+	    collectStats(r1.getFirst()); //TODO hantera returnen
 	}
 	if(s2.isGreen()){
-	    Car temp2 = r2.getFirst(); //TODO hantera returnen
+	    collectStats(r2.getFirst()); //TODO hantera returnen
 	}
 	r1.step();
 	r2.step();
 	Car c = r0.firstCar();
 	if(c != null){
-	    if (c.getDest() == 1){
+	    if ((c.getDest()) == 1){
 		if(r1.lastFree()){
-		    r1.putLast(c);
+		    r1.putLast(r0.getFirst());
 		}
 	    }
 	    else{
 		if(r2.lastFree()){
-		    r2.putLast(c);
+		    r2.putLast(r0.getFirst());
 		}
 	    }
 	}
 	r0.step();
-	if(Math.random()*ankomstIntensitet == 0){
-	    if(Math.random()*destinationer == 0){
+	if((int)(Math.random()*ankomstIntensitet) == 0){
+	    if((int)(Math.random()*destinationer) == 0){
 		r0.putLast(new Car(time, 1));
 	    }
 	    else{
 		r0.putLast(new Car(time, 2));
 	    }
 	}
-	print();
     }
 
-	//    public void printStatistics() {
+    public void printStatistics() {
 	// Skriv statistiken samlad så här långt
-	//}
+	System.out.println("Cars passed: " + carsPassed + "\nAverage time passing through :" + ((double)timeWaited/(double)carsPassed) + " ticks");
+    }
     public void print(){
 	System.out.println(s1.toString());
 	System.out.print(r1.toString());

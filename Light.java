@@ -3,10 +3,15 @@ public class Light {
     private int time;  // Intern klocka: 0, 1, ... period-1, 0, 1 ...
     private int green; // Signalen grön när time<green 
 
-    public Light(int p, int g){
-	period = p;
-	green = g;
-	time = 0;
+    public Light(int p, int g) throws Exception{
+	if(p > g && p > 1 && g > 0){
+	    period = p;
+	    green = g;
+	    time = 0;
+	}
+	else{
+	    throw new Exception("Period must be greater than green time.");
+	}
     }    
     public void step() {
 	if(time < period-1){

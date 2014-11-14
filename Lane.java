@@ -1,14 +1,16 @@
+
+
 public class Lane {
-
-    public static class OverflowException extends RuntimeException {
-        // Undantag som kastas när det inte gick att lägga 
-        // in en ny bil på vägen
-    }
-
+    
     private Car[] theLane;
 
-    public Lane(int n) {
-	theLane = new Car[n];
+    public Lane(int n) throws Exception{
+	if(n>0){
+	    theLane = new Car[n];	    
+	}
+	else{
+	    throw new Exception("Lane length must be greater than zero");
+	}
 	// Konstruerar ett Lane-objekt med plats för n fordon
     }
 
@@ -54,7 +56,7 @@ public class Lane {
 	    theLane[theLane.length-1] = c;
 	}
 	else{
-	    //TODO OverflowException
+	    throw new OverflowException();
 	}
 	// Ställ en bil på sista platsen på vägen
 	// (om det går).

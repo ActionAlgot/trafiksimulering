@@ -1,13 +1,23 @@
 public class Car {
 
-    private int bornTime;
-    private int dest; // 1 för rakt fram, 2 för vänstersväng
+    private final int bornTime;
+    private final int dest; // 1 för rakt fram, 2 för vänstersväng
 
     // konstruktor och get-metoder
     
-    public Car(int b, int n){
-	bornTime = b;
-	dest = n;
+    public Car(int b, int n) throws Exception(){
+	if(b > -1){
+	    if(n == 1 || n == 2){
+		bornTime = b;
+		dest = n;
+	    }
+	    else{
+		throw new Exception("Destination must be either 1 or 2");
+	    }
+	}
+	else{
+	    throw new Exception("Borntime cannot be negative");
+	}
     }
 
     public int getBornTime(){

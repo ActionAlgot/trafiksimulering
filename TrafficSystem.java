@@ -1,4 +1,5 @@
 import java.util.InputMismatchException;
+import java.lang.NegativeArraySizeException;
 import java.lang.*;
 import java.util.Scanner;
 
@@ -18,12 +19,11 @@ public class TrafficSystem {
     // destinationer...)
     private int ankomstIntensitet;
     private int destinationer;
-    private int aLength;
-    private int bcLength;
 
     // Diverse attribut för statistiksamling
     private int carsPassed = 0;
     private int timeWaited = 0;
+    private int carsThrown = 0;
 
     private void collectStats(Car c){
 	if(c != null){
@@ -34,7 +34,7 @@ public class TrafficSystem {
     
     private int time = 0;
 
-    public TrafficSystem(int ll, int ll2, int lTR, int gTR, int lTL, int gTL, int a, int d){
+    /* public TrafficSystem(int ll, int ll2, int lTR, int gTR, int lTL, int gTL, int a, int d){
 	r0 = new Lane(ll);
 	r1 = new Lane(ll2);
 	r2 = new Lane(ll2);
@@ -42,99 +42,74 @@ public class TrafficSystem {
 	s2 = new Light(lTL, gTL);
 	ankomstIntensitet = a;
 	destinationer = d;	
-    }
+	}*/
 
     public TrafficSystem(){
 	readParameters();
     }
 
-    public void readParameters(){
-	Scanner input = new Scanner(System.in);
-	int tempP = 1;
+    private int readPosInt(String request, Scanner input){
+	int temp;
 	while(true){
 	    try{
-		System.out.print("Length of r0: ");
-		r0 = new Lane(input.nextInt());
-		break;
+		System.out.print(request);
+		temp = input.nextInt();
+		if(temp > 0){
+		    return temp;
+		}
+		System.out.println("Invalid input try again with an integer greater than zero");
 	    }
 	    catch(InputMismatchException x){
-		System.out.println("Invalid input try again with int");
+		System.out.println("Invalid input try again with an integer greater than zero");
+		input.next();
 	    }
 	}
-	
+    }
+    private int readPercentageInt(String request, Scanner input){
+	int temp;
 	while(true){
 	    try{
-		System.out.print("\nLength of r1 and r2: ");
-		int tempn = input.nextInt();
-		r1 = new Lane(tempn);
-		r2 = new Lane(tempn);
-		break;
+		System.out.print(request);
+		temp = input.nextInt();
+		if(temp > -1 && temp < 101){
+		    return temp;
+		}
+		System.out.println("Invalid input try again with an integer between 0 and 100");
 	    }
 	    catch(InputMismatchException x){
-		System.out.println("Invalid input try again with int");
+		System.out.println("Invalid input try again with an integer between 0 and 100");
+		input.next();
 	    }
 	}
-	while(true){
-	    try{
-		System.out.print("\nRight traffic light period: ");
-		tempP = input.nextInt();
-		break;
-	    }
-	    catch(InputMismatchException x){
-		System.out.println("Invalid input try again with int");
-	    }
-	}
+    }
 
+    private void readParameters(){
+	Scanner input = new Scanner(System.in);
+	int temp;
+	r0 = new Lane(readPosInt("Length of r0: ", input));
+	temp = readPosInt("\nLength of r1 and r2: ", input);
+	r1 = new Lane(temp);
+	r2 = new Lane(temp);
 	while(true){
 	    try{
-		System.out.print("\nRight traffic green time: ");
-		s1 = new Light(tempP, input.nextInt());
+		s1 = new Light(readPosInt("\nRight traffic light period", input), readPosInt("\nRight traffic green time", input));
 		break;
 	    }
-	    catch(InputMismatchException x){
-		System.out.println("Invalid input try again with int");
+	    catch(Exception x){
+		System.out.println("Period must be greater than green time, try again");
 	    }
 	}
 	while(true){
 	    try{
-		System.out.print("\nLeft traffic light period: ");
-		tempP = input.nextInt();
+		s2 = new Light(readPosInt("\nLeft traffic light period", input), readPosInt("\nLeft traffic green time", input));
 		break;
 	    }
-	    catch(InputMismatchException x){
-		System.out.println("Invalid input try again with int");
+	    catch(Exception x){
+		System.out.println("Period must be greater than green time, try again");
 	    }
 	}
-	while(true){
-	    try{
-		System.out.print("\nLeft traffic light green time: ");
-		s2 = new Light(tempP, input.nextInt());
-		break;
-	    }
-	    catch(InputMismatchException x){
-		System.out.println("Invalid input try again with int");
-	    }
-	}
-	while(true){
-	    try{
-		System.out.print("\nArrival intensity: ");
-		ankomstIntensitet = input.nextInt();
-		break;
-	    }
-	    catch(InputMismatchException x){
-		System.out.println("Invalid input try again with int");
-	    }
-	}
-	while(true){
-	    try{
-		System.out.print("\nDestination ratio: ");
-		destinationer = input.nextInt();
-		break;
-	    }
-	    catch(InputMismatchException x){
-		System.out.println("Invalid input try again with int");
-	    }
-	}
+	ankomstIntensitet = readPercentageInt("\nArrival intensity in %: ", input);
+	destinationer = readPercentageInt("\n% cars going left: ", input); 
 	System.out.print("\n");
 	// Läser in parametrar för simuleringen
 	// Metoden kan läsa från terminalfönster, dialogrutor
@@ -172,19 +147,29 @@ public class TrafficSystem {
 	    }
 	}
 	r0.step();
-	if((int)(Math.random()*ankomstIntensitet) == 0){
-	    if((int)(Math.random()*destinationer) == 0){
-		r0.putLast(new Car(time, 1));
+	if((int)(Math.random()*100) < ankomstIntensitet){
+	    if((int)(Math.random()*100) > destinationer){
+		try{
+		    r0.putLast(new Car(time, 1));
+		}
+		catch(OverflowException x){
+		    carsThrown++;
+		}
 	    }
 	    else{
-		r0.putLast(new Car(time, 2));
+		try{
+		    r0.putLast(new Car(time, 2));
+		}
+		catch(OverflowException x){
+		    carsThrown++;
+		}
 	    }
 	}
     }
 
     public void printStatistics() {
 	// Skriv statistiken samlad så här långt
-	System.out.println("Cars passed: " + carsPassed + "\nAverage time passing through :" + ((double)timeWaited/(double)carsPassed) + " ticks");
+	System.out.println("Cars passed: " + carsPassed + "\nAverage time passing through: " + ((double)timeWaited/(double)carsPassed) + " ticks\nCars unable to enter lane: " + carsThrown);
     }
     public void print(){
 	System.out.println(s1.toString());

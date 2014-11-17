@@ -24,13 +24,14 @@ public class TrafficSystem {
     private int carsPassed = 0;
     private int timeWaited = 0;
     private int carsThrown = 0;
-
+	/**
+	 * @param Car c is a car which has passed through the 
+	 * simulation and the data inside needs
+	 * to be processed
+	 * Is used to collect data as the simulation is being run
+	 */
     private void collectStats(Car c){
-    	/**
-    	 * @param Car c is a car which has passed through the 
-    	 * simulation and the data inside needs
-    	 * to be processed
-    	 */
+
 	if(c != null){
 	    carsPassed++;
 	    timeWaited = timeWaited + (time - c.getBornTime());
@@ -52,13 +53,14 @@ public class TrafficSystem {
     public TrafficSystem(){
 	readParameters();
     }
-
+   	/**
+  	 * @param request is what you want to ask the user of the simulation
+    * @param input is what the user will write in the terminal
+    * and only works with a positive integer
+	* @return returns the integer the user input into the terminal 
+	*/	
     private int readPosInt(String request, Scanner input){
-    	/**
-    	 * @param request is what you want to ask the user of the simulation
-    	 * @param input is what the user will write in the terminal
-    	 * and only works with a integer greater than zero
-    	 */
+
 	int temp;
 	while(true){
 	    try{
@@ -66,9 +68,7 @@ public class TrafficSystem {
 		temp = input.nextInt();
 		if(temp > 0){
 		    return temp;
-		    /**
-		     * @return returns the integer the user input into the terminal 
-		     */
+
 		}
 		System.out.println("Invalid input try again with an integer greater than zero");
 	    }
@@ -78,22 +78,21 @@ public class TrafficSystem {
 	    }
 	}
     }
+	/**
+ * @param request is what you want to ask the user of the simulation
+ *  @param input is what the user will write in the terminal and
+ *  only works with a positive integer
+* @return returns the integer the user input into the terminal  		    
+*/
     private int readPercentageInt(String request, Scanner input){
-    	/**
-    	 * @param request is what you want to ask the user of the simulation
-    	 *  @param input is what the user will write in the terminal and
-    	 *  only works with a integer between 0 and 100
-    	 */
+
 	int temp;
 	while(true){
 	    try{
 		System.out.print(request);
 		temp = input.nextInt();
 		if(temp > -1 && temp < 101){
-		    return temp;
-	    /**
-	    * @return returns the integer the user input into the terminal  		    
-	    */
+
 		}
 		System.out.println("Invalid input try again with an integer between 0 and 100");
 	    }
@@ -103,7 +102,9 @@ public class TrafficSystem {
 	    }
 	}
     }
-
+    /**
+     * Let's the user put in parameters for the simulation
+     */
     private void readParameters(){
 	Scanner input = new Scanner(System.in);
 	int temp;
@@ -139,7 +140,9 @@ public class TrafficSystem {
 	// man inte då behöver mata in värdena vid varje körning.
         // Standardklassen Properties är användbar för detta. 
     }
-
+    /**
+     * Uses most other method and variables to create the simulation for each step
+     */
     public void step() {
 	// Stega systemet ett tidssteg m h a komponenternas step-metoder
 	// Skapa bilar, lägg in och ta ur på de olika Lane-kompenenterna
@@ -188,6 +191,9 @@ public class TrafficSystem {
 	}
     }
 
+    /**
+     * Prints the statistics 
+     */
     public void printStatistics() {
 	// Skriv statistiken samlad så här långt
 	System.out.println("Cars passed: " + carsPassed);

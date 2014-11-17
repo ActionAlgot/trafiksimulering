@@ -3,11 +3,10 @@
 public class Lane {
     
     private Car[] theLane;
-
-    public Lane(int n) throws Exception{
-    	/**@param n is how many slots a car can fit into
-    	 * in lane
+    	/**@param n is how many slots a car can fit into lane
     	 */
+    public Lane(int n) throws Exception{
+
 	if(n>0){
 	    theLane = new Car[n];	    
 	}
@@ -32,26 +31,29 @@ public class Lane {
         // (om det går). (Fordonet på plats 0 tas bort utifrån 
 	// mm h a metoden nedan.)
     }
-
-    public Car getFirst() {
-	Car temp = theLane[0];
-	theLane[0] = null;
-	return temp;
 	/** 
 	 * @return returns and removes the first car in a lane
 	 *		
 	 */
+    public Car getFirst() {
+	Car temp = theLane[0];
+	theLane[0] = null;
+	return temp;
+
 	// Returnera och tag bort bilen som står först
     }
-
-    public Car firstCar() {
-	return theLane[0];
 	/**
 	 * @return returns the first car in a lane
 	 */
+    public Car firstCar() {
+	return theLane[0];
+
 	// Returnera bilen som står först utan att ta bort den
     }
-
+    /**
+     * @return returns true if last place in Lane is free
+     * otherwise returns false
+     */
 
     public boolean lastFree() {
 	if(theLane[theLane.length-1] == null){
@@ -59,17 +61,14 @@ public class Lane {
 	}
 	return false;
 	// Returnera true om sista platsen ledig, annars false
-    /**
-     * @return returns true if last place in Lane is free
-     * otherwise returns false
-     */
+
     
     }
-
-    public void putLast(Car c) throws OverflowException {
-    /**
+   /**
      * @param car which is to be put last in Lane
      */
+    public void putLast(Car c) throws OverflowException {
+ 
     if(lastFree()){
 	    theLane[theLane.length-1] = c;
 	}
@@ -80,7 +79,11 @@ public class Lane {
 	// Ställ en bil på sista platsen på vägen
 	// (om det går).
     }
-
+    /**
+     * @return returns the representation of either
+     * a car or an empty spot for the representation
+     * system
+     */
     public String toString() {
 	String s = "";
 	for(Car c: theLane){
@@ -93,9 +96,5 @@ public class Lane {
 	}
 	return s;
     }
-    /**
-     * @return returns the representation of either
-     * a car or an empty spot for the representation
-     * system
-     */
+
 }

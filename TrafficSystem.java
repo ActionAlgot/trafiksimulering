@@ -26,6 +26,11 @@ public class TrafficSystem {
     private int carsThrown = 0;
 
     private void collectStats(Car c){
+    	/**
+    	 * @param Car c is a car which has passed through the 
+    	 * simulation and the data inside needs
+    	 * to be processed
+    	 */
 	if(c != null){
 	    carsPassed++;
 	    timeWaited = timeWaited + (time - c.getBornTime());
@@ -49,6 +54,11 @@ public class TrafficSystem {
     }
 
     private int readPosInt(String request, Scanner input){
+    	/**
+    	 * @param request is what you want to ask the user of the simulation
+    	 * @param input is what the user will write in the terminal
+    	 * and only works with a integer greater than zero
+    	 */
 	int temp;
 	while(true){
 	    try{
@@ -56,6 +66,9 @@ public class TrafficSystem {
 		temp = input.nextInt();
 		if(temp > 0){
 		    return temp;
+		    /**
+		     * @return returns the integer the user input into the terminal 
+		     */
 		}
 		System.out.println("Invalid input try again with an integer greater than zero");
 	    }
@@ -66,6 +79,11 @@ public class TrafficSystem {
 	}
     }
     private int readPercentageInt(String request, Scanner input){
+    	/**
+    	 * @param request is what you want to ask the user of the simulation
+    	 *  @param input is what the user will write in the terminal and
+    	 *  only works with a integer between 0 and 100
+    	 */
 	int temp;
 	while(true){
 	    try{
@@ -73,6 +91,9 @@ public class TrafficSystem {
 		temp = input.nextInt();
 		if(temp > -1 && temp < 101){
 		    return temp;
+	    /**
+	    * @return returns the integer the user input into the terminal  		    
+	    */
 		}
 		System.out.println("Invalid input try again with an integer between 0 and 100");
 	    }
@@ -169,7 +190,11 @@ public class TrafficSystem {
 
     public void printStatistics() {
 	// Skriv statistiken samlad så här långt
-	System.out.println("Cars passed: " + carsPassed + "\nAverage time passing through: " + ((double)timeWaited/(double)carsPassed) + " ticks\nCars unable to enter lane: " + carsThrown);
+	System.out.println("Cars passed: " + carsPassed);
+	if(carsPassed != 0){
+	System.out.println("Average time passing through: " + ((double)timeWaited/(double)carsPassed) + " ticks");
+	}
+	System.out.println("Cars unable to enter lane: " + carsThrown);
     }
     public void print(){
 	System.out.println(s1.toString());

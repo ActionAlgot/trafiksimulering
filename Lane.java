@@ -5,6 +5,9 @@ public class Lane {
     private Car[] theLane;
 
     public Lane(int n) throws Exception{
+    	/**@param n is how many slots a car can fit into
+    	 * in lane
+    	 */
 	if(n>0){
 	    theLane = new Car[n];	    
 	}
@@ -34,11 +37,18 @@ public class Lane {
 	Car temp = theLane[0];
 	theLane[0] = null;
 	return temp;
+	/** 
+	 * @return returns and removes the first car in a lane
+	 *		
+	 */
 	// Returnera och tag bort bilen som står först
     }
 
     public Car firstCar() {
 	return theLane[0];
+	/**
+	 * @return returns the first car in a lane
+	 */
 	// Returnera bilen som står först utan att ta bort den
     }
 
@@ -49,14 +59,23 @@ public class Lane {
 	}
 	return false;
 	// Returnera true om sista platsen ledig, annars false
+    /**
+     * @return returns true if last place in Lane is free
+     * otherwise returns false
+     */
+    
     }
 
     public void putLast(Car c) throws OverflowException {
-	if(lastFree()){
+    /**
+     * @param car which is to be put last in Lane
+     */
+    if(lastFree()){
 	    theLane[theLane.length-1] = c;
 	}
 	else{
 	    throw new OverflowException();
+
 	}
 	// Ställ en bil på sista platsen på vägen
 	// (om det går).
@@ -74,4 +93,9 @@ public class Lane {
 	}
 	return s;
     }
+    /**
+     * @return returns the representation of either
+     * a car or an empty spot for the representation
+     * system
+     */
 }

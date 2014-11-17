@@ -8,7 +8,7 @@ public class Car {
 
     // konstruktor och get-metoder
     
-    public Car(int b, int n) throws Exception(){
+    public Car(int b, int n) throws RuntimeException{
 	/**
 	 * @param b is int = time the car is born from the first step in the simulation
 	 * @param n is an int which shows the destination, either 1 for lane 1 or 2 for lane 2
@@ -19,11 +19,11 @@ public class Car {
 		dest = n;
 	    }
 	    else{
-		throw new Exception("Destination must be either 1 or 2");
+		throw new RuntimeException("Destination must be either 1 or 2");
 	    }
 	}
 	else{
-	    throw new Exception("Borntime cannot be negative");
+	    throw new RuntimeException("Borntime cannot be negative");
 	}
     }
 

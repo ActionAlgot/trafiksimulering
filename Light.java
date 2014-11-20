@@ -11,7 +11,7 @@ public class Light {
 	* through in the simulation
 	* if it is not green, false is returned
 	*/
-    public Light(int p, int g) throws Exception{
+    public Light(int p, int g) throws RuntimeException{
  
 	if(p > g && p > 1 && g > 0){
 	    period = p;
@@ -19,7 +19,7 @@ public class Light {
 	    time = 0;
 	}
 	else{
-	    throw new Exception("Period must be greater than green time.");
+	    throw new RuntimeException("Period must be greater than green time.");
 	}
     }    
     public void step() {

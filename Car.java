@@ -10,7 +10,7 @@ public class Car {
 	 * @param b is int = time the car is born from the first step in the simulation
 	 * @param n is an int which shows the destination, either 1 for lane 1 or 2 for lane 2
 	 */
-    public Car(int b, int n) throws RuntimeException{
+    public Car(int b, int n) throws IllegalArgumentException{
 
 	   	if(b > -1){
 	    if(n == 1 || n == 2){
@@ -18,11 +18,11 @@ public class Car {
 		dest = n;
 	    }
 	    else{
-		throw new RuntimeException("Destination must be either 1 or 2");
+		throw new IllegalArgumentException("Destination must be either 1 or 2");
 	    }
 	}
 	else{
-	    throw new RuntimeException("Borntime cannot be negative");
+	    throw new IllegalArgumentException("Borntime cannot be negative");
 	}
     }
 	/**

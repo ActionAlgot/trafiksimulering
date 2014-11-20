@@ -56,7 +56,7 @@ public class TrafficSystem {
    	/**
   	 * @param request is what you want to ask the user of the simulation
     * @param input is what the user will write in the terminal
-    * and only works with a positive integer
+    * and only works with an integer greater than zero
 	* @return returns the integer the user input into the terminal 
 	*/	
     private int readPosInt(String request, Scanner input){
@@ -81,7 +81,7 @@ public class TrafficSystem {
 	/**
  * @param request is what you want to ask the user of the simulation
  *  @param input is what the user will write in the terminal and
- *  only works with a positive integer
+ *  only works with an integer between 0 and 100
 * @return returns the integer the user input into the terminal  		    
 */
     private int readPercentageInt(String request, Scanner input){
@@ -91,7 +91,7 @@ public class TrafficSystem {
 	    try{
 		System.out.print(request);
 		temp = input.nextInt();
-		if(temp > -1 && temp < 101){
+		if(temp >= 0 && temp <= 100){
 
 		}
 		System.out.println("Invalid input try again with an integer between 0 and 100");
@@ -117,7 +117,7 @@ public class TrafficSystem {
 		s1 = new Light(readPosInt("\nRight traffic light period", input), readPosInt("\nRight traffic green time", input));
 		break;
 	    }
-	    catch(Exception x){
+	    catch(IllegalArgumentException x){
 		System.out.println("Period must be greater than green time, try again");
 	    }
 	}
@@ -126,7 +126,7 @@ public class TrafficSystem {
 		s2 = new Light(readPosInt("\nLeft traffic light period", input), readPosInt("\nLeft traffic green time", input));
 		break;
 	    }
-	    catch(Exception x){
+	    catch(IllegalArgumentException x){
 		System.out.println("Period must be greater than green time, try again");
 	    }
 	}
@@ -171,8 +171,8 @@ public class TrafficSystem {
 	    }
 	}
 	r0.step();
-	if((int)(Math.random()*100) < ankomstIntensitet){
-	    if((int)(Math.random()*100) > destinationer){
+	if((int)(Math.random()*100) <= ankomstIntensitet){
+	    if((int)(Math.random()*100) >= destinationer){
 		try{
 		    r0.putLast(new Car(time, 1));
 		}
@@ -195,13 +195,14 @@ public class TrafficSystem {
      * Prints the statistics 
      */
     public void printStatistics() {
-	// Skriv statistiken samlad så här långt
 	System.out.println("Cars passed: " + carsPassed);
 	if(carsPassed != 0){
 	System.out.println("Average time passing through: " + ((double)timeWaited/(double)carsPassed) + " ticks");
 	}
 	System.out.println("Cars unable to enter lane: " + carsThrown);
     }
+
+
     public void print(){
 	System.out.println(s1.toString());
 	System.out.print(r1.toString());

@@ -5,13 +5,13 @@ public class Lane {
     private Car[] theLane;
     	/**@param n is how many slots a car can fit into lane
     	 */
-    public Lane(int n) throws Exception{
+    public Lane(int n) throws IllegalArgumentException{
 
 	if(n>0){
 	    theLane = new Car[n];	    
 	}
 	else{
-	    throw new Exception("Lane length must be greater than zero");
+	    throw new IllegalArgumentException("Lane length must be greater than zero");
 	}
 	// Konstruerar ett Lane-objekt med plats för n fordon
     }
